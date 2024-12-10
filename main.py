@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from routes.users import user_router
 from routes.events import event_router
 from database.connection import conn
+from fastapi.responses import RedirectResponse
 
 import uvicorn
 
@@ -15,6 +16,10 @@ app.include_router(event_router, prefix="/event")
 @app.on_event("startup")
 def on_startup():
     conn()
+
+@app.get("/")
+async def home():
+    return RedirectResponse(url="/event/")
 
 # if __name__ == "main":
 #     uvicorn.run("main:app", host="192.168.31.182", port = 8080, reload = True)
