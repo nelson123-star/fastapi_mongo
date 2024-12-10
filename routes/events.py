@@ -5,7 +5,7 @@ from sqlalchemy.event import Events
 from database.connection import  get_session
 from fastapi import APIRouter, HTTPException, status, Depends
 from models.events import Event, EventUpdate
-import select as select
+from sqlmodel import select
 
 event_router = APIRouter(
     tags=["Events"]
@@ -23,11 +23,11 @@ session=Depends(get_session)) -> dict:
     "message": "Event created successfully"
     }
 
-# @event_router.get("/", response_model=List[Event])
-# async def rereieve_all_events(session=Depends(get_session))->List[Event]:
-#     statement = select(Event)
-#     events = select.exec(statement).all()
-#     return events
+@event_router.get("/", response_model=List[Event])
+async def rereieve_all_events(session=Depends(get_session))->List[Event]:
+    statement = select(Event)
+    events = session.exec(statement).all()
+    return events
 
 @event_router.get("/{id}", response_model=Event)
 async def retrieve_event(id:int, session = Depends(get_session))->Event:
