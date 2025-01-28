@@ -6,7 +6,7 @@ from beanie import Document, Link
 class User(Document):
     email: EmailStr
     password: str
-    events: Optional[List[List[Event]]]
+    events: Optional[List[Link[Event]]]
 
     class Settings:
         name = "users"
