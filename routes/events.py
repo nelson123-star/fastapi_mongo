@@ -1,11 +1,9 @@
 from typing import List
 from beanie import PydanticObjectId
-from sqlalchemy.event import Events
 
 from database.connection import  Database
 from fastapi import APIRouter, HTTPException, status, Depends
 from models.events import Event, EventUpdate
-from sqlmodel import select
 
 event_router = APIRouter(
     tags=["Events"]
@@ -31,8 +29,7 @@ async def update_event(id: PydanticObjectId, body: EventUpdate) -> Event:
     return updated_event
 
 @event_router.get("/", response_model=List[Event])
-async def rereieve_all_events()->List[Event]:
-    statement = select(Event)
+async def retreieve_all_events()->List[Event]:
     events = await event_database.get_all()
     return events
 
